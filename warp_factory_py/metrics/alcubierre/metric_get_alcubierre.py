@@ -1,9 +1,9 @@
 import numpy as np
 from datetime import date as _date
-from pegasus.warp_factory.metrics.set_minkowski_three_plus_one import set_minkowski_three_plus_one
-from pegasus.warp_factory.metrics.utils.shape_function_alcubierre import shapeFunction_Alcubierre 
+from warp_factory_py.metrics.set_minkowski_three_plus_one import set_minkowski_three_plus_one
+from warp_factory_py.metrics.utils.shape_function_alcubierre import shape_function_alcubierre 
 from units.universal_constants.c import c 
-from pegasus.warp_factory.metrics.three_plus_one_builder import three_plus_one_builder
+from warp_factory_py.metrics.three_plus_one_builder import three_plus_one_builder
 
 def metric_get_alcubierre(grid_size,world_centre,v,R,sigma,grid_scale = None):
 
@@ -73,7 +73,7 @@ def metric_get_alcubierre(grid_size,world_centre,v,R,sigma,grid_scale = None):
                     r = ((x - xs) ** 2 + y ** 2 + z ** 2) ** 0.5
 
                     # Find shape function at this point in r
-                    fs = shapeFunction_Alcubierre(r, R, sigma)
+                    fs = shape_function_alcubierre(r, R, sigma)
 
                     # Add Alcubierre modification to shift vector along x
                     beta[0][t, i, j, k] = -v * fs

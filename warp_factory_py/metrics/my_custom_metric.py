@@ -3,11 +3,9 @@ from datetime import datetime
 
 from set_minkowski_three_plus_one import set_minkowski_three_plus_one
 from three_plus_one_builder import three_plus_one_builder
-from src.pegasus.inputs.alpha import alpha_function
-from src.pegasus.inputs.beta import beta_function
-from src.pegasus.inputs.gamma import gamma_function
 
-def my_custom_metric(grid_size, world_centre, grid_scaling):
+
+def my_custom_metric(grid_size, world_centre, grid_scaling, alpha_function, beta_function, gamma_function):
 
     metric = {}
 

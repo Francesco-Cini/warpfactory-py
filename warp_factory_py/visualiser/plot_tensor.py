@@ -1,9 +1,9 @@
 import numpy as np
 from solver.verify_tensor import verify_tensor
 from solver.utils.strcmpi import strcmpi
-from pegasus.warp_factory.visualiser.utils.label_cartesian_axis import label_cartesian_axis
-from pegasus.warp_factory.visualiser.utils.get_slice_data import get_slice_data
-from pegasus.warp_factory.visualiser.utils.plot_component import plot_component
+from warp_factory_py.visualiser.utils.label_cartesian_axis import label_cartesian_axis
+from warp_factory_py.visualiser.utils.get_slice_data import get_slice_data
+from warp_factory_py.visualiser.utils.plot_component import plot_component
 
 def plot_tensor(tensor, alpha = None, sliced_planes = None, slice_locations = None):
 
