@@ -1,7 +1,7 @@
 import warnings
 import numpy as np
-from pegasus.warp_factory.solver.utils.is_field import is_field
-from pegasus.warp_factory.solver.utils.strcmpi import strcmpi
+from warp_factory_py.solver.utils.is_field import is_field
+from warp_factory_py.solver.utils.strcmpi import strcmpi
 
 def verify_tensor(input_tensor, suppress_msgs = None):
 
