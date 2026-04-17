@@ -1,3 +1,5 @@
+import numpy as np
+
 def take_finite_difference_1(A, k, delta, phi_phi_flag):
 
     if is_gpu_array(A):
@@ -8,6 +10,6 @@ def take_finite_difference_1(A, k, delta, phi_phi_flag):
     
     else:
         s = A.shape
-        B = np.zeros(s)
+        B = np.zeros(s)        
 
     return B
