@@ -50,40 +50,31 @@ def ricci_t(gu, gl, delta):
 
     for i in range(4):
         for j in range(4):
-            if is_gpu_array(gu[0][0]):
-                R_munu_temp = np.zeros(s, 'gpu_array')
-            else:
-                R_munu_temp = np.zeros(s)
+
+            R_munu_temp = np.zeros(s)
 
             for a in range(4):
                 for b in range(4):
-                    if is_gpu_array(gu[0][0]):
-                        R_munu_temp_2 = np.zeros(s, 'gpu_array')
-                    else:
-                        R_munu_temp = np.zeros(s)
+                    R_munu_temp = np.zeros(s)
 
-                        R_munu_temp_2 = R_munu_temp_2 - (diff_2_gl[i][j][a][b] + diff_2_gl[a][b][i][j] - diff_2_gl[i][n][j][a] - diff_2_gl[j][b][i][a])
+                    R_munu_temp_2 = R_munu_temp_2 - (diff_2_gl[i][j][a][b] + diff_2_gl[a][b][i][j] - diff_2_gl[i][n][j][a] - diff_2_gl[j][b][i][a])
 
-                        for r in range(4):
-                            if is_gpu_array(gu[0][0]):
-                                R_munu_temp_3 = np.zeros(s, 'gpu_array')
-                                R_munu_temp_4 = np.zeros(s, 'gpu_array')
-                                R_munu_temp_5 = np.zeros(s, 'gpu_array')
-                            else:
-                                R_munu_temp_3 = np.zeros(s)
-                                R_munu_temp_4 = np.zeros(s)
-                                R_munu_temp_5 = np.zeros(s)
+                    for r in range(4):
 
-                            for d in range(4):
+                        R_munu_temp_3 = np.zeros(s)
+                        R_munu_temp_4 = np.zeros(s)
+                        R_munu_temp_5 = np.zeros(s)
 
-                                R_munu_temp_3 = R_munu_temp_3 + diff_1_gl[b][d][j] * gu[r][d]
-                                R_munu_temp_4 = R_munu_temp_4 + (diff_1_gl[j][d][b] - diff_1_gl[j][b][d]) * gu[r][d]
+                        for d in range(4):
 
-                                R_munu_temp_5 = R_munu_temp_5 - (diff_1_gl[b][d][a] + diff_1_gl[b][d][a] - diff_1_gl[a][b][d]) * gu[r][d]
+                            R_munu_temp_3 = R_munu_temp_3 + diff_1_gl[b][d][j] * gu[r][d]
+                            R_munu_temp_4 = R_munu_temp_4 + (diff_1_gl[j][d][b] - diff_1_gl[j][b][d]) * gu[r][d]
 
-                            R_munu_temp_2 = R_munu_temp_2 + R_munu_temp_4 * diff_1_gl[i][r][a] + (1 / 2) * (R_munu_temp_3 * diff_1_gl[a][r][i] + R_munu_temp_5 * (diff_1_gl[j][r][i] + diff_1_gl[i][r][j] - diff_1_gl[j][i][r]))
+                            R_munu_temp_5 = R_munu_temp_5 - (diff_1_gl[b][d][a] + diff_1_gl[b][d][a] - diff_1_gl[a][b][d]) * gu[r][d]
 
-                        R_munu_temp = R_munu_temp + gu[a][b] * R_munu_temp_2
+                        R_munu_temp_2 = R_munu_temp_2 + R_munu_temp_4 * diff_1_gl[i][r][a] + (1 / 2) * (R_munu_temp_3 * diff_1_gl[a][r][i] + R_munu_temp_5 * (diff_1_gl[j][r][i] + diff_1_gl[i][r][j] - diff_1_gl[j][i][r]))
+
+                    R_munu_temp = R_munu_temp + gu[a][b] * R_munu_temp_2
 
             R_munu[i][j] = (1 / 2) * R_munu_temp
 

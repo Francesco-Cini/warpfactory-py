@@ -1,14 +1,11 @@
 from datetime import datetime 
 
-from verify_tensor import verify_tensor
-from solver.utils.strcmpi import strcmpi
-from analyser.utils import change_tensor_index
-from utils import met_2_den
+from warp_factory_py.solver.verify_tensor import verify_tensor
+from warp_factory_py.solver.utils.strcmpi import strcmpi
+from warp_factory_py.analyser.utils import change_tensor_index
+from warp_factory_py.solver.utils import met_2_den
 
-def get_energy_tensor(metric, try_gpu, diff_order):
-
-    if try_gpu is None:
-        try_gpu = 0
+def get_energy_tensor(metric, diff_order):
 
     if diff_order is None:
         diff_order = 'fourth'
@@ -18,40 +15,17 @@ def get_energy_tensor(metric, try_gpu, diff_order):
     
     if not strcmpi(metric['index'], "covariant"):
         metric = change_tensor_index(metric, "covariant")
-        print()
-
-    if try_gpu:
-        metric_tensor_gpu =  [[None for _ in range(4)] for _ in range(4)]
+        print(f"Changed metric from %s index to %s index\n", {metric["index"]}, "covariant")
     
-        for i in range(4):
-            for j in range(4):
-                metric_tensor_gpu[i][j] = gpu_array(metric['tensor'][i][j])
 
-        metric['scaling'] = gpu_array(metric['scaling'])
-        if strcmpi(diff_order, 'fourth'):
-            en_den_gpu = met_2_den(metric_tensor_gpu, metric['scaling'])
-        
-        elif strcmpi(diff_order, 'second'):
-            en_den_gpu = met_2_den(metric_tensor_gpu, metric['scaling'])
+    if strcmpi(diff_order, 'fourth'):
+        energy_tensor = met_2_den(metric['tensor'], metric['scaling'])
 
-        else:
-            raise Exception("Order Flag Not Specified Correctly. Options: 'fourth' or 'second'")
-        
-        energy_tensor = [[None for _ in range(4)] for _ in range(4)]
-        
-        for i in range(4):
-            for j in range(4):
-                energy_tensor[i][j] = gather(en_den_gpu[i][j])
-    
+    elif strcmpi(diff_order, 'second'):
+        energy_tensor = met_2_den_2(metric['tensor'], metric['scaling'])
+
     else:
-        if strcmpi(diff_order, 'fourth'):
-            energy_tensor = met_2_den(metric['tensor'], metric['scaling'])
-
-        elif strcmpi(diff_order, 'second'):
-            energy_tensor = met_2_den_2(metric['tensor'], metric['scaling'])
-
-        else:
-            raise Exception("Order Flag Not Specified Correctly. Options: 'fourth' or 'second'")
+        raise Exception("Order Flag Not Specified Correctly. Options: 'fourth' or 'second'")
         
     energy = {}
         

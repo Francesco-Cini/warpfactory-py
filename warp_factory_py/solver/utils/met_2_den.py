@@ -17,7 +17,7 @@ def met_2_den(gl, delta):
 
     R = ricci_s(R_munu, gu)
 
-    E = ein_t(R_munu, R, g1)
+    E = ein_t(R_munu, R, gl)
 
     energy_density = ein_e(E, gu)
 

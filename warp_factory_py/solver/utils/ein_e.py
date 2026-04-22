@@ -1,7 +1,7 @@
 import numpy as np
 
-from pegasus.warp_factory.units.universal_constants.c import c
-from pegasus.warp_factory.units.universal_constants.G import G
+from warp_factory_py.units.universal_constants.c import c
+from warp_factory_py.units.universal_constants.G import G
 
 def ein_e(E, gu):
 

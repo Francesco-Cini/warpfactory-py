@@ -1,16 +1,9 @@
 import numpy as np
 
 def take_finite_difference_2(A, k_1, k_2, delta, phi_phi_flag):
-
-    if is_gpu_array(A):
-        delta = gpu_array(delta)
-
-        s = gpu_array(A.shape)
-        B = np.zeros(s, 'gpu_array')
-    
-    else:
-        s = A.shape
-        B = np.zeros(s)     
+        
+    s = A.shape
+    B = np.zeros(s)     
 
     if s[k_1] >= 5 and s[k_2] >= 5:
         if k_1 == k_2:
