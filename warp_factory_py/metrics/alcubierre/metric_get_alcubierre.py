@@ -2,7 +2,7 @@ import numpy as np
 from datetime import date as _date
 from warp_factory_py.metrics.set_minkowski_three_plus_one import set_minkowski_three_plus_one
 from warp_factory_py.metrics.utils.shape_function_alcubierre import shape_function_alcubierre 
-from units.universal_constants.c import c 
+from warp_factory_py.units.universal_constants.c import c 
 from warp_factory_py.metrics.three_plus_one_builder import three_plus_one_builder
 
 def metric_get_alcubierre(grid_size,world_centre,v,R,sigma,grid_scale = None):
@@ -67,7 +67,7 @@ def metric_get_alcubierre(grid_size,world_centre,v,R,sigma,grid_scale = None):
                 for t in range(Nt):
 
                     # Determine the x offset of the center of the bubble, centered in time
-                    xs = ((t + 1) * dt - world_centre[0]) * v * c
+                    xs = ((t + 1) * dt - world_centre[0]) * v * c()
 
                     # Find the radius from the center of the bubble
                     r = ((x - xs) ** 2 + y ** 2 + z ** 2) ** 0.5
