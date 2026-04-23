@@ -10,7 +10,7 @@ def ein_e(E, gu):
     for mu in range(4):
         for nu in range(4):
 
-            en_den_[mu][nu] = (c ** 4) / (8 * np.pi * G) * E[mu][nu]
+            en_den_[mu][nu] = (c() ** 4) / (8 * np.pi * G()) * E[mu][nu]
     
     en_den = [[None for _ in range(4)] for _ in range(4)]
 

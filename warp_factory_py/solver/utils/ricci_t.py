@@ -21,16 +21,16 @@ def ricci_t(gu, gl, delta):
             for k in range(4):
                 diff_1_gl[i][j][k] = take_finite_difference_1(gl[i][j], k, delta, phi_phi_flag)
                 if k == 1:
-                    diff_1_gl[i][j][k] = (1 / c) * diff_1_gl[i][j][k]
+                    diff_1_gl[i][j][k] = (1 / c()) * diff_1_gl[i][j][k]
 
                 for n in range(k,4):
                     diff_2_gl[i][j][k][n] = take_finite_difference_2(gl[i][j], k, n, delta, phi_phi_flag)
 
                     if (n == 1 and k != 1) or (n != 1 and k == 1):
-                        diff_2_gl[i][j][k][n] = (1 / c) * diff_2_gl[i][j][k][n]
+                        diff_2_gl[i][j][k][n] = (1 / c()) * diff_2_gl[i][j][k][n]
 
                     if k != n:
-                        diff_2_gl[i][j][k][n] = diff_2_gl[i][j][k][n]
+                        diff_2_gl[i][j][n][k] = diff_2_gl[i][j][k][n]
                 
     for k in range(4):
         diff_1_gl[1][0][k] = diff_1_gl[0][1][k]
@@ -55,9 +55,9 @@ def ricci_t(gu, gl, delta):
 
             for a in range(4):
                 for b in range(4):
-                    R_munu_temp = np.zeros(s)
+                    R_munu_temp_2 = np.zeros(s)
 
-                    R_munu_temp_2 = R_munu_temp_2 - (diff_2_gl[i][j][a][b] + diff_2_gl[a][b][i][j] - diff_2_gl[i][n][j][a] - diff_2_gl[j][b][i][a])
+                    R_munu_temp_2 = R_munu_temp_2 - (diff_2_gl[i][j][a][b] + diff_2_gl[a][b][i][j] - diff_2_gl[i][b][j][a] - diff_2_gl[j][b][i][a])
 
                     for r in range(4):
 
