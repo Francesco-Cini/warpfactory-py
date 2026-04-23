@@ -40,14 +40,13 @@ def verify_tensor(input_tensor, suppress_msgs = None):
 
         if is_field(input_tensor, 'tensor'):
             tensor = input_tensor['tensor']
-            tensorValid = (
+            if (
                 isinstance(tensor, (list, tuple))
                 and len(tensor) == 4
                 and all(isinstance(row,(list, tuple)) and len(row) == 4 for row in tensor)
                 and hasattr(tensor[0][0], "shape")
                 and len(tensor[0][0].shape) == 4
-            )
-            if tensorValid():
+            ):
                 disp_message("tensor: Verified", suppress_msgs)
             else:
                 warnings.warn("Tensor is not formatted correctly. Tensor must be a 4x4 cell array of 4D values.")

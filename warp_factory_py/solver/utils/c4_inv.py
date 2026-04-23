@@ -1,6 +1,6 @@
 import numpy as np
 
-import c_det
+from warp_factory_py.solver.utils.c_det import c_det
 
 def c4_inv(cell_array):
 

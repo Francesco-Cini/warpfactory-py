@@ -2,8 +2,8 @@ import numpy as np
 
 from warp_factory_py.units.universal_constants.c import c
 
-import take_finite_difference_1
-import take_finite_difference_2
+from warp_factory_py.solver.utils.take_finite_difference_1 import take_finite_difference_1
+from warp_factory_py.solver.utils.take_finite_difference_2 import take_finite_difference_2
 
 def ricci_t(gu, gl, delta):
 

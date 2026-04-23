@@ -15,7 +15,7 @@ sigma = 0.5
 
 metric = metric_get_alcubierre(grid_size, world_centre, velocity, R, sigma)
 
-energy_tensor = get_energy_tensor(metric)
+energy_tensor = get_energy_tensor(metric, 'fourth')
 
 # Plotting Metric
 

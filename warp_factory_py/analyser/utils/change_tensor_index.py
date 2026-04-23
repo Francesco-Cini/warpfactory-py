@@ -1,5 +1,5 @@
-from solver.utils.strcmpi import strcmpi
-from solver.utils.c4_inv import c4_inv
+from warp_factory_py.solver.utils.strcmpi import strcmpi
+from warp_factory_py.solver.utils.c4_inv import c4_inv
 
 def change_tensor_index(input_tensor, index, metric_tensor):
 

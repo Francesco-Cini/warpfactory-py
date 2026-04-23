@@ -2,6 +2,8 @@ import numpy as np
 
 def c_det(cell_array):
 
+    cell_array = np.asarray([cell_array])
+
     h, w = cell_array.shape
 
     if h==2 and w==2:

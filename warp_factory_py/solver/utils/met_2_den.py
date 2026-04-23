@@ -1,10 +1,10 @@
 import numpy as np
 
-import c4_inv
-import ricci_t
-import ricci_s
-import ein_t
-import ein_e
+from warp_factory_py.solver.utils.c4_inv import c4_inv
+from warp_factory_py.solver.utils.ricci_t import ricci_t
+from warp_factory_py.solver.utils.ricci_s import ricci_s
+from warp_factory_py.solver.utils.ein_t import ein_t
+from warp_factory_py.solver.utils.ein_e import ein_e
 
 def met_2_den(gl, delta):
     
