@@ -5,10 +5,13 @@ from warp_factory_py.metrics.set_minkowski import set_minkowski
 from warp_factory_py.units.universal_constants.c import c 
 from warp_factory_py.metrics.utils.shape_function_alcubierre import shape_function_alcubierre 
 
-def metric_get_modified_time(grid_size, world_centre, v, R, sigma, A, grid_scaling):
+def metric_get_modified_time_comoving(grid_size, world_centre, v, R, sigma, A, grid_scaling):
 
     if grid_scaling is None:
         grid_scaling = np.array([1, 1, 1, 1])
+
+    if grid_size[0] > 1:
+        raise Exception("The time grid is greater than 1, only a size of 1 can be used in comoving")
 
     metric = {}
 
@@ -23,7 +26,7 @@ def metric_get_modified_time(grid_size, world_centre, v, R, sigma, A, grid_scali
 
     metric['type'] = "metric"
     metric['frame'] = "comoving"
-    metric['name'] = "Modified Time"
+    metric['name'] = "Modified Time Comoving"
     metric['scaling'] = grid_scaling
     metric['coords'] = "cartesian"
     metric['index'] = "covariant"
@@ -52,4 +55,4 @@ def metric_get_modified_time(grid_size, world_centre, v, R, sigma, A, grid_scali
 
                     metric['tensor'][0][0][t, i, j, k] = - (((1 - fs) + fs / A) ** 2) + ((fs * v) ** 2)
 
-    return metric
+    return metric 
