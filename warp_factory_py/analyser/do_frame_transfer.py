@@ -1,11 +1,48 @@
-from solver.verify_tensor import verify_tensor
+import numpy as np
 
-def do_frame_transfer(metric, energy_tensor, frame, try_gpu):
+from warp_factory_py.solver.verify_tensor import verify_tensor
+from warp_factory_py.solver.utils.strcmpi import strcmpi
+from warp_factory_py.solver.utils.is_field import is_field
 
-    if try_gpu is None:
-        try_gpu = 0
+def do_frame_transfer(metric, energy_tensor, frame):
 
     transformed_energy_tensor = energy_tensor
-    transformed_energy_tensor['tensor'] = 
+    transformed_energy_tensor['tensor'] = [[None for _ in range(4)] for _ in range(4)]
 
     if not verify_tensor(metric, 1):
+        raise Exception("Metric is not verified. Please verify metric using verify_tensor(metric).")
+    
+    if not verify_tensor(energy_tensor, 1):
+        raise Exception("Stress-energy is not verified. Please veify Stress-energy tensor using verify_tensor(energy_tensor).")
+    
+    if strcmpi(frame, "Eulerian") and not (is_field(energy_tensor, 'frame')) and strcmpi(energy_tensor['frame'], "Eulerian"):
+        energy_tensor = change_tensor_index(energy_tensor, "covariant", metric)
+
+        array_energy_tensor = tensor_cell_2_array(energy_tensor)
+        array_metric_tensor = tensor_cell_2_array(metric)
+
+        M = get_eulerian_transformation_matrix(array_metric_tensor, metric['coords'])
+        M = np.transpose(M, (4, 5, 0, 1, 2, 3))
+        array_energy_tensor = np.transpose(array_energy_tensor, (4, 5, 0, 1, 2, 3))
+
+        transformed_temp_tensor = {}
+
+        transformed_temp_tensor['tensor'] = np.matmul(np.matmul(np.swapaxes(M, -1, -2), array_energy_tensor), M)
+
+        z = transformed_energy_tensor['tensor'].shape
+
+        for i in range(4):
+            for j in range(4):
+                transformed_energy_tensor['tensor'][i][j] = np.reshape(transformed_temp_tensor['tensor'][i, j, :, :], (*z[2:], 1), order="F")
+
+        for i in range(2,4):
+            transformed_energy_tensor['tensor'][0][i] = -transformed_energy_tensor['tensor'][0][i]
+            transformed_energy_tensor['tensor'][i][0] = -transformed_energy_tensor['tensor'][i][0]
+
+        transformed_energy_tensor['frame'] = "Eulerian"
+        transformed_energy_tensor['index'] = "contravariant"
+
+    else:
+        raise Warning("Frame not found")
+
+    return transformed_energy_tensor

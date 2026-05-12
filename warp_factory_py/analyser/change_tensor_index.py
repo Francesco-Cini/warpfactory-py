@@ -1,3 +1,5 @@
+import numpy as np
+
 from warp_factory_py.solver.utils.strcmpi import strcmpi
 from warp_factory_py.solver.utils.c4_inv import c4_inv
 
@@ -15,7 +17,6 @@ def change_tensor_index(input_tensor, index, metric_tensor):
         raise Exception("Transformation selected is not allowed, use either: covariant, contravariant, mixedupdown, mixeddownup")
     
     output_tensor = input_tensor
-
     if strcmpi(input_tensor['type'], "metric"):
         if (strcmpi(input_tensor['index'], "covariant") and strcmpi(index, "contravariant")) and (strcmpi(input_tensor['index'], "contravariant") and strcmpi(index, "covariant")):
             output_tensor = c4_inv(input_tensor['tensor'])
@@ -42,3 +43,40 @@ def change_tensor_index(input_tensor, index, metric_tensor):
     output_tensor["index"] = index
 
     return output_tensor
+
+def flip_index(input_tensor, metric_tensor):
+
+    temp_output_tensor = [[None for _ in range(4)] for _ in range(4)]
+
+    for i in range(4):
+        for j in range(4):
+            temp_output_tensor[i][j] = np.zeros(input_tensor['tensor'][i][j].shape)
+
+            for a in range(4):
+                for b in range(4):
+                    temp_output_tensor[i][j] = temp_output_tensor[i][j] + input_tensor['tensor'][a][b] * metric_tensor['tensor'][a][i] * metric_tensor['tensor'][b][j]
+    return temp_output_tensor
+
+def mix_index_1(input_tensor, metric_tensor):
+
+    temp_output_tensor = [[None for _ in range(4)] for _ in range(4)]
+
+    for i in range(4):
+        for j in range(4):
+            temp_output_tensor[i][j] = np.zeros(input_tensor['tensor'][i][j].shape)
+
+            for a in range(4):
+                temp_output_tensor[i][j] = temp_output_tensor[i][j] + input_tensor['tensor'][a][j] * metric_tensor['tensor'][a][i]
+    return temp_output_tensor
+
+def mix_index_2(input_tensor, metric_tensor):
+
+    temp_output_tensor = [[None for _ in range(4)] for _ in range(4)]
+
+    for i in range(4):
+        for j in range(4):
+            temp_output_tensor[i][j] = np.zeros(input_tensor['tensor'][i][j].shape)
+
+            for a in range(4):
+                temp_output_tensor[i][j] = temp_output_tensor[i][j] + input_tensor['tensor'][i][a] * metric_tensor['tensor'][a][j]
+    return temp_output_tensor 
