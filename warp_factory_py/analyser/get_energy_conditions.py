@@ -1,5 +1,6 @@
-from solver.utils.strcmpi import strcmpi
-from solver.verify_tensor import verify_tensor
+from warp_factory_py.solver.utils.strcmpi import strcmpi
+from warp_factory_py.solver.verify_tensor import verify_tensor
+from warp_factory_py.analyser.utils.generate_uniform_field import generate_uniform_field
 import do_frame_transfer
 
 def get_energy_conditions(energy_tensor, metric, condition, num_angular_vec, num_time_vec, return_vec, try_gpu):
@@ -27,18 +28,6 @@ def get_energy_conditions(energy_tensor, metric, condition, num_angular_vec, num
     
     if not verify_tensor(energy_tensor, 1):
         raise Exception("Stress-energy is not verified. Please verify stress-eenergy using verify_tensor(EnergyTensor)")
-    
-    if try_gpu:
-        energy_tensor_gpu = energy_tensor
-        metric_gpu = metric
-
-        for i in range(4):
-            for j in range(4):
-                energy_tensor_gpu['tensor'][i][j] = gpu_array(energy_tensor['tensor'][i][j])
-                metric_gpu['tensor'][i][j] = gpu_array(metric['tensor'][i][j])
-        
-        energy_tensor = energy_tensor_gpu
-        metric = metric_gpu
 
     a, b, c, d = metric['tensor'][0][0].shape
 
