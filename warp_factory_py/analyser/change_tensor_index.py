@@ -8,6 +8,13 @@ def change_tensor_index(
         index, 
         metric_tensor
         ):
+    """ Changes a tensor's index.
+    Parameters
+    ----------
+
+    Returns
+    -------
+    """
 
     # Handle default input arguments
     if metric_tensor is None:
@@ -39,16 +46,72 @@ def change_tensor_index(
                 metric_tensor['tensor'] = c4_inv(metric_tensor['tensor'])
                 metric_tensor['index'] = "contravariant"
             
-            output_tensor['tensor'] = flip
+            output_tensor['tensor'] = flip_index(input_tensor, metric_tensor)
 
         elif (strcmpi(input_tensor['index'], "contravariant") and strcmpi(index, "covariant")): 
-                if strcmpi(metric_tensor['index'], "contravariant"):
-                    metric_tensor['tensor'] = c4_inv(metric_tensor['tensor'])
-                    metric_tensor['index'] = "covariant"
+            if strcmpi(metric_tensor['index'], "contravariant"):
+                metric_tensor['tensor'] = c4_inv(metric_tensor['tensor'])
+                metric_tensor['index'] = "covariant"
+            
+            output_tensor['tensor'] = flip_index(input_tensor, metric_tensor)
         
         # To Mixed
+        elif strcmpi(input_tensor['index'], "contravariant") and strcmpi(index, "mixedupdown"):
+            if strcmpi(metric_tensor['index'], "contravariant"):
+                metric_tensor['tensor'] = c4_inv(metric_tensor['tensor'])
+                metric_tensor['index'] = "covariant"
 
-        # Form Mixed
+            output_tensor['tensor'] = mix_index_2(input_tensor, metric_tensor)
+
+        elif strcmpi(input_tensor['index'], "contravariant") and strcmpi(index, "mixeddownup"):
+            if strcmpi(metric_tensor['index'], "contravariant"):
+                metric_tensor['tensor'] = c4_inv(metric_tensor['tensor'])
+                metric_tensor['index'] = "covariant"
+
+            output_tensor['tensor'] = mix_index_1(input_tensor, metric_tensor)
+
+        elif strcmpi(input_tensor['index'], "covariant") and strcmpi(index, "mixedupdown"):
+            if strcmpi(metric_tensor['index'], "covariant"):
+                metric_tensor['tensor'] = c4_inv(metric_tensor['tensor'])
+                metric_tensor['index'] = "contravariant"
+
+            output_tensor['tensor'] = mix_index_1(input_tensor, metric_tensor)
+
+        elif strcmpi(input_tensor['index'], "covariant") and strcmpi(index, "mixeddownup"):
+            if strcmpi(metric_tensor['index'], "covariant"):
+                metric_tensor['tensor'] = c4_inv(metric_tensor['tensor'])
+                metric_tensor['index'] = "contravariant"
+
+            output_tensor['tensor'] = mix_index_2(input_tensor, metric_tensor)
+
+        # From Mixed
+        elif strcmpi(input_tensor['index'], "mixedupdown") and strcmpi(index, "contravariant"):
+            if strcmpi(metric_tensor['index'], "covariant"):
+                metric_tensor['tensor'] = c4_inv(metric_tensor['tensor'])
+                metric_tensor['index'] = "contravariant"
+
+            output_tensor['tensor'] = mix_index_2(input_tensor, metric_tensor)
+        
+        elif strcmpi(input_tensor['index'], "mixedupdown") and strcmpi(index, "covariant"):
+            if strcmpi(metric_tensor['index'], "contravariant"):
+                metric_tensor['tensor'] = c4_inv(metric_tensor['tensor'])
+                metric_tensor['index'] = "covariant"
+
+            output_tensor['tensor'] = mix_index_1(input_tensor, metric_tensor)
+        
+        elif strcmpi(input_tensor['index'], "mixeddownup") and strcmpi(index, "covariant"):
+            if strcmpi(metric_tensor['index'], "contravariant"):
+                metric_tensor['tensor'] = c4_inv(metric_tensor['tensor'])
+                metric_tensor['index'] = "covariant"
+
+            output_tensor['tensor'] = mix_index_2(input_tensor, metric_tensor)
+
+        elif strcmpi(input_tensor['index'], "mixeddownup") and strcmpi(index, "contravariant"):
+            if strcmpi(metric_tensor['index'], "covariant"):
+                metric_tensor['tensor'] = c4_inv(metric_tensor['tensor'])
+                metric_tensor['index'] = "contravariant"
+
+            output_tensor['tensor'] = mix_index_1(input_tensor, metric_tensor)
 
     output_tensor["index"] = index
 
