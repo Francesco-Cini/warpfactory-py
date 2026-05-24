@@ -1,7 +1,8 @@
 from warp_factory_py.solver.utils.strcmpi import strcmpi
 from warp_factory_py.solver.verify_tensor import verify_tensor
+from warp_factory_py.analyser.do_frame_transfer import do_frame_transfer
 from warp_factory_py.analyser.utils.generate_uniform_field import generate_uniform_field
-import do_frame_transfer
+
 
 def get_energy_conditions(energy_tensor, metric, condition, num_angular_vec, num_time_vec, return_vec, try_gpu):
 
@@ -41,7 +42,5 @@ def get_energy_conditions(energy_tensor, metric, condition, num_angular_vec, num
 
     vec_field = generate_uniform_field(type, num_angular_vec, num_time_vec, try_gpu)
 
-    if is_gpu_array(metric['tensor'][0][0]):
-        vec_field = gpu_array(vec_field)
     
     return map, vec, vector_field_out
