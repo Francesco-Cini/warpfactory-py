@@ -15,7 +15,7 @@ def cov_div(g_l, g_u, vec_u, vec_d, idx_div, idx_vec, delta, stair_sel):
                 phi_phi_flag = 0
             
             for k in range(4):
-                diff_1_gl[i, j, k] = take_finite_difference_1(g_l[i, j], k, delta, phi_phi_flag)
+                diff_1_gl[i][j][k] = take_finite_difference_1(g_l[i][j], k, delta, phi_phi_flag)
 
     if stair_sel == 0:
         cd_vec = take_finite_difference_1(vec_d[idx_vec], idx_div, delta, 0)

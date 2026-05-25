@@ -9,10 +9,11 @@ def three_plus_one_decomposer(metric):
 
     beta_down = [metric['tensor'][0][1], metric['tensor'][0][2], metric['tensor'][0][3]]
 
-    gamma_down = [metric['tensor'][1][1], metric['tensor'][1][2], metric['tensor'][1][3], 
-                  metric['tensor'][2][1], metric['tensor'][2][2], metric['tensor'][2][3], 
-                  metric['tensor'][3][1], metric['tensor'][3][2], metric['tensor'][3][3]
-                  ]
+    gamma_down = [
+        [metric['tensor'][1][1], metric['tensor'][1][2], metric['tensor'][1][3]],
+        [metric['tensor'][2][1], metric['tensor'][2][2], metric['tensor'][2][3]],
+        [metric['tensor'][3][1], metric['tensor'][3][2], metric['tensor'][3][3]],
+    ]
     
     gamma_up = c3_inv(gamma_down)
 

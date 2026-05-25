@@ -26,18 +26,16 @@ def do_frame_transfer(metric, energy_tensor, frame):
         array_metric_tensor = tensor_cell_2_array(metric)
 
         M = get_eulerian_transformation_matrix(array_metric_tensor, metric['coords'])
-        M = np.transpose(M, (4, 5, 0, 1, 2, 3))
-        array_energy_tensor = np.transpose(array_energy_tensor, (4, 5, 0, 1, 2, 3))
 
         transformed_temp_tensor = {}
 
         transformed_temp_tensor['tensor'] = np.matmul(np.matmul(np.swapaxes(M, -1, -2), array_energy_tensor), M)
 
-        z = transformed_energy_tensor['tensor'].shape
+        z = energy_tensor['tensor'][0][0].shape
 
         for i in range(4):
             for j in range(4):
-                transformed_energy_tensor['tensor'][i][j] = np.reshape(transformed_temp_tensor['tensor'][i, j, :, :], (*z[2:], 1), order="F")
+                transformed_energy_tensor['tensor'][i][j] = transformed_temp_tensor['tensor'][..., i, j].reshape(z)
 
         for i in range(2,4):
             transformed_energy_tensor['tensor'][0][i] = -transformed_energy_tensor['tensor'][0][i]

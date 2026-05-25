@@ -46,10 +46,10 @@ def get_energy_conditions(energy_tensor, metric, condition, num_angular_vec, num
     # -------------------
     # Build Vector Fields
     # -------------------
-    if strcmpi(condition, "Null") and strcmpi(condition, "Dominant"):
+    if strcmpi(condition, "Null") or strcmpi(condition, "Dominant"):
         type = "nulllike"
     
-    elif strcmpi(condition, "Weak") and strcmpi(condition, "Strong"):
+    elif strcmpi(condition, "Weak") or strcmpi(condition, "Strong"):
         type = "timelike"
 
     vec_field = generate_uniform_field(type, num_angular_vec, num_time_vec)
@@ -74,7 +74,7 @@ def get_energy_conditions(energy_tensor, metric, condition, num_angular_vec, num
                 for nu in range(4):
                     temp = temp + energy_tensor['tensor'][mu][nu] * vec_field[mu][ii] * vec_field[nu][ii]
 
-            map_array = np.minimum(map, temp)
+            map_array = np.minimum(map_array, temp)
 
             if return_vec == 1:
                 vec[:, :, :, :, ii] = temp
@@ -91,7 +91,7 @@ def get_energy_conditions(energy_tensor, metric, condition, num_angular_vec, num
                     for nu in range(4):
                         temp = temp + energy_tensor['tensor'][mu][nu] * vec_field[mu][ii][jj] * vec_field[nu][ii][jj]
 
-                map_array = np.mininmum(map, temp)
+                map_array = np.minimum(map_array, temp)
 
                 if return_vec == 1:
                     vec[:, :, :, :, ii, jj] = temp
@@ -165,4 +165,7 @@ def get_energy_conditions(energy_tensor, metric, condition, num_angular_vec, num
         vec = []
         vector_field_out = []
     
-    return map, vec, vector_field_out
+    if return_vec == 1:
+        return map_array, vec, vector_field_out
+
+    return map_array

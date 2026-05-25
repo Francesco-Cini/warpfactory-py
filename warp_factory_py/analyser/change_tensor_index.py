@@ -6,7 +6,7 @@ from warp_factory_py.solver.utils.c4_inv import c4_inv
 def change_tensor_index(
         input_tensor, 
         index, 
-        metric_tensor
+        metric_tensor=None
         ):
     """ Changes a tensor's index.
     Parameters

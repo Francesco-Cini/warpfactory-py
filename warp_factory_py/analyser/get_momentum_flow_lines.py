@@ -12,9 +12,9 @@ def get_momentum_flow_lines(energy_tensor, start_points, step_size, max_steps, s
     y_mom = np.squeeze(energy_tensor['tensor'][0][2]) * scale_factor
     z_mom = np.squeeze(energy_tensor['tensor'][0][3]) * scale_factor
 
-    starting_points_x = np.reshape(start_points[0], (1, start_points[0].size))
-    starting_points_y = np.reshape(start_points[1], (1, start_points[1].size))
-    starting_points_z = np.reshape(start_points[2], (1, start_points[2].size))
+    starting_points_x = np.ravel(start_points[0])
+    starting_points_y = np.ravel(start_points[1])
+    starting_points_z = np.ravel(start_points[2])
 
     paths = [None for _ in range(max(starting_points_x.shape))]
 

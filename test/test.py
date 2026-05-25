@@ -6,6 +6,7 @@ from warp_factory_py.solver.get_energy_tensor import get_energy_tensor
 from warp_factory_py.analyser.get_energy_conditions import get_energy_conditions
 from warp_factory_py.analyser.get_scalars import get_scalars
 from warp_factory_py.analyser.get_momentum_flow_lines import get_momentum_flow_lines
+from warp_factory_py.analyser.change_tensor_index import change_tensor_index
 from warp_factory_py.visualiser.utils.surf_q_modified import sqm
 
 
@@ -26,10 +27,10 @@ print(np.shape(energy_tensor["tensor"]))
 print(type(energy_tensor["tensor"][0][0]))
 print(np.shape(energy_tensor["tensor"][0][0]))
 
-[null_energy_condition] = get_energy_conditions(energy_tensor, metric, "Null", None, None, None)
-[weak_energy_condition] = get_energy_conditions(energy_tensor, metric, "Weak", None, None, None)
-[strong_energy_condition] = get_energy_conditions(energy_tensor, metric, "Strong", None, None, None)
-[dominant_energy_condition] = get_energy_conditions(energy_tensor, metric, "Dominant", None, None, None)
+null_energy_condition = get_energy_conditions(energy_tensor, metric, "Null", None, None, None)
+weak_energy_condition = get_energy_conditions(energy_tensor, metric, "Weak", None, None, None)
+strong_energy_condition = get_energy_conditions(energy_tensor, metric, "Strong", None, None, None)
+dominant_energy_condition = get_energy_conditions(energy_tensor, metric, "Dominant", None, None, None)
 
 expansion_scalar, shear_scalar, vorticity_scalar = get_scalars(metric)
 
@@ -200,7 +201,13 @@ ngridsteps = 4
 flow_step_size = 0.75
 flow_max_steps = 10000
 
-flow_scale_factor = 1 / np.max(np.abs(energy_tensor["tensor"][0][1]))
+energy_tensor_contravariant = change_tensor_index(energy_tensor.copy(), "contravariant", metric.copy())
+
+for i in range(4):
+    for j in range(4):
+        energy_tensor_contravariant["tensor"][i][j] = energy_tensor_contravariant["tensor"][i][j][2, :, :, :]
+
+flow_scale_factor = 1 / np.max(np.abs(energy_tensor_contravariant["tensor"][0][1]))
 
 x_vals = np.arange(1, grid_size[1] + 1, ngridsteps)
 y_vals = np.arange(1, grid_size[2] + 1, ngridsteps)
@@ -211,7 +218,7 @@ X, Y, Z = np.meshgrid(x_vals, y_vals, z_vals, indexing="xy")
 start_points = [X, Y, Z]
 
 paths = get_momentum_flow_lines(
-    energy_tensor,
+    energy_tensor_contravariant,
     start_points,
     flow_step_size,
     flow_max_steps,

@@ -8,22 +8,23 @@ from warp_factory_py.analyser.utils.get_trace import get_trace
 
 def get_scalars(metric):
 
-    array_metric_tensor = np.empty((*metric["tensor"][0, 0].shape, 4, 4))
+    shape = metric["tensor"][0][0].shape
+    array_metric_tensor = np.empty((*shape, 4, 4))
 
     for i in range(4):
         for j in range(4):
-            array_metric_tensor[:, :, :, :, i, j] = metric["tensor"][i, j]
+            array_metric_tensor[:, :, :, :, i, j] = metric["tensor"][i][j]
 
     alpha, _, _, beta_up, _ = three_plus_one_decomposer(metric)
 
-    array_beta = np.empty((*metric['tensor'][0, 0].shape, 3))
+    array_beta = np.empty((*shape, 3))
 
     for i in range(3):
         array_beta[:, :, :, :, i] = beta_up[i]
 
-    s = metric['tensor'][0][0].shape
-    u_up = np.zeros()
-    u_down = np.zeros()
+    s = shape
+    u_up = np.zeros((*s, 4))
+    u_down = np.zeros((*s, 4))
 
     for t in range(s[0]):
         for i in range(s[1]):
@@ -43,9 +44,11 @@ def get_scalars(metric):
 
     metric = change_tensor_index(metric, "covariant")
 
+    delta = np.asarray(metric.get('scaling', np.ones(4)))
+
     for i in range(4):
         for j in range(4):
-            del_u[i][j] = cov_div(metric['tensor'], c4_inv(metric['tensor']), u_up_cell, u_down_cell, i, j, np.array([0, 0, 0, 0]), 0)
+            del_u[i][j] = cov_div(metric['tensor'], c4_inv(metric['tensor']), u_up_cell, u_down_cell, i, j, delta, 0)
 
     P_mix = [[None for _ in range(4)] for _ in range(4)]
     P = [[None for _ in range(4)] for _ in range(4)]
