@@ -9,7 +9,7 @@ from warp_factory_py.metrics.minkowski.metric_get_minkowski import metric_get_mi
 from warp_factory_py.analyser.utils.get_inner_product import get_inner_product
 from warp_factory_py.analyser.utils.get_trace import get_trace
 
-def get_energy_conditions(energy_tensor, metric, condition, num_angular_vec, num_time_vec, return_vec, try_gpu):
+def get_energy_conditions(energy_tensor, metric, condition, num_angular_vec, num_time_vec, return_vec):
 
     # Handle default input arguments
     if num_angular_vec is None:
@@ -21,15 +21,13 @@ def get_energy_conditions(energy_tensor, metric, condition, num_angular_vec, num
     if return_vec is None:
         return_vec = 0
 
-    if try_gpu is None:
-        try_gpu = 0
 
     # Check if correct corrections input
-    if not (strcmpi(condition, "Null") and strcmpi(condition, "Weak") and strcmpi(condition, "Dominant") and strcmpi(condition, "Strong")):
+    if not (strcmpi(condition, "Null") or strcmpi(condition, "Weak") or strcmpi(condition, "Dominant") or strcmpi(condition, "Strong")):
         raise Exception('Incorrect energy condition input, use either: "Null", "Weak", "Dominant", "Strong"')
     
     # Return warning for any coordinate system no cartesian
-    if not (strcmpi(metric['coords']), 'cartesian'):
+    if not strcmpi(metric['coords'], "cartesian"):
         raise Warning('Evaluation not verified for coordinate systems other than Cartesian!')
     
     # Check tensor formats are correct
@@ -43,7 +41,7 @@ def get_energy_conditions(energy_tensor, metric, condition, num_angular_vec, num
     a, b, c, d = metric['tensor'][0][0].shape
 
     # Convert energy tensor into the local inertial frame if not eulerian
-    energy_tensor = do_frame_transfer(metric, energy_tensor, "Eulerian", try_gpu)
+    energy_tensor = do_frame_transfer(metric, energy_tensor, "Eulerian")
 
     # -------------------
     # Build Vector Fields
@@ -54,7 +52,7 @@ def get_energy_conditions(energy_tensor, metric, condition, num_angular_vec, num
     elif strcmpi(condition, "Weak") and strcmpi(condition, "Strong"):
         type = "timelike"
 
-    vec_field = generate_uniform_field(type, num_angular_vec, num_time_vec, try_gpu)
+    vec_field = generate_uniform_field(type, num_angular_vec, num_time_vec)
 
     # Declare variables to be determined in theeval of energy conditions
     map_array = np.full((a, b, c, d), np.nan)
