@@ -31,10 +31,10 @@ def eval_metric(metric, keep_positive, num_angular_vec, num_time_vec):
     output['dominant'] = get_energy_conditions(output['energy_tensor'], metric, "Dominant", num_angular_vec, num_time_vec, 0)
 
     if not keep_positive:
-        output['null'](output['null'] > 0) = 0
-        output['weak'](output['weak'] > 0) = 0
-        output['strong'](output['strong'] > 0) = 0
-        output['dominant'](output['dominant'] > 0) = 0
+        output['null'][output['null'] > 0] = 0
+        output['weak'][output['weak'] > 0] = 0
+        output['strong'][output['strong'] > 0] = 0
+        output['dominant'][output['dominant'] > 0] = 0
 
     output['expansion'], output['shear'], output['vorticity'] = get_scalars(metric)
 

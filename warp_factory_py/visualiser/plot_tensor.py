@@ -73,7 +73,7 @@ def plot_tensor(tensor, alpha = None, sliced_planes = None, slice_locations = No
     # Check that the coords are Cartesian
 
     if strcmpi(tensor['coords'], 'cartesian'):
-        np.array([xLabelText, yLabelText]) = label_cartesian_axis(sliced_planes)
+        xLabelText, yLabelText = label_cartesian_axis(sliced_planes)
 
         if strcmpi(tensor['index'], 'mixedupdown') or strcmpi(tensor['index'], 'mixeddownup'):
             c1 = np.array([1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4])
