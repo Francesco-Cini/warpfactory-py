@@ -1,13 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from warp_factory_py.metrics.alcubierre.metric_get_alcubierre import metric_get_alcubierre
-from warp_factory_py.solver.get_energy_tensor import get_energy_tensor
-from warp_factory_py.analyser.get_energy_conditions import get_energy_conditions
-from warp_factory_py.analyser.get_scalars import get_scalars
-from warp_factory_py.analyser.get_momentum_flow_lines import get_momentum_flow_lines
-from warp_factory_py.analyser.change_tensor_index import change_tensor_index
-from warp_factory_py.visualiser.utils.surf_q_modified import sqm
+from pywarp.metrics.alcubierre.metric_get_alcubierre import metric_get_alcubierre
+from pywarp.solver.get_energy_tensor import get_energy_tensor
+from pywarp.analyser.get_energy_conditions import get_energy_conditions
+from pywarp.analyser.get_scalars import get_scalars
+from pywarp.analyser.get_momentum_flow_lines import get_momentum_flow_lines
+from pywarp.analyser.change_tensor_index import change_tensor_index
+from pywarp.visualiser.utils.surf_q_modified import sqm
 
 
 grid_size = np.array([5, 20, 20, 20])

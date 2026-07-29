@@ -1,8 +1,8 @@
 import numpy as np
 import time
 
-from warp_factory_py.metrics.alcubierre.metric_get_alcubierre import metric_get_alcubierre
-from warp_factory_py.solver.get_energy_tensor import get_energy_tensor
+from pywarp.metrics.alcubierre.metric_get_alcubierre import metric_get_alcubierre
+from pywarp.solver.get_energy_tensor import get_energy_tensor
 
 grid_size = np.array([5, 20, 20, 20])
 world_centre = (grid_size + 1) / 2

@@ -7,4 +7,4 @@ name = "warp-factory-py"
 version = "0.1.0"
 
 [tool.setuptools.packages.find]
-include = ["warp_factory_py*"]
+include = ["pywarp*"]
