@@ -6,5 +6,22 @@ build-backend = "setuptools.build_meta"
 name = "warp-factory-py"
 version = "0.1.0"
 
+[project.optional-dependencies]
+test = [
+    "pytest>=8",
+    "pytest-cov>=5",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--strict-config", "--strict-markers"]
+markers = [
+    "integration: complete multi-component workflows",
+    "numerical: convergence and accuracy checks",
+    "parity: comparisons against MATLAB reference data",
+    "performance: runtime and memory benchmarks",
+    "slow: tests excluded from the default development suite",
+]
+
 [tool.setuptools.packages.find]
 include = ["pywarp*"]
