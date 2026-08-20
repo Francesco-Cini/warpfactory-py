@@ -5,6 +5,10 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "warp-factory-py"
 version = "0.1.0"
+dependencies = [
+    "array-api-compat",
+    "numpy",
+]
 
 [project.optional-dependencies]
 test = [

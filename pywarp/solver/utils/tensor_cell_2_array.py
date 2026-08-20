@@ -1,15 +1,18 @@
-import numpy as np
+from array_api_compat import array_namespace
+
 
 def tensor_cell_2_array(tensor):
-    shape = tensor["tensor"][0][0].shape
-    array_tensor = np.empty((*shape, 4, 4), dtype=np.result_type(*[
-        tensor["tensor"][i][j]
+
+    components = tensor["tensor"]
+    flat_components = tuple(
+        components[i][j]
         for i in range(4)
         for j in range(4)
-    ]))
+    )
+    xp = array_namespace(*flat_components)
 
-    for i in range(4):
-        for j in range(4):
-            array_tensor[..., i, j] = tensor["tensor"][i][j]
-
-    return array_tensor
+    rows = tuple(
+        xp.stack(tuple(components[i]), axis=-1)
+        for i in range(4)
+    )
+    return xp.stack(rows, axis=-2)

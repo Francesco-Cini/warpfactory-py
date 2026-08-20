@@ -3,7 +3,7 @@ import numpy as np
 from pywarp.solver.utils.strcmpi import strcmpi
 from pywarp.analyser.utils.get_even_points_on_sphere import get_even_points_on_sphere
 
-def generate_uniform_field(type, num_angular_vec, num_time_vec):
+def generate_uniform_field(type, num_angular_vec, num_time_vec, gpu=None):
 
     if not (strcmpi(type, "nulllike") or strcmpi(type, "timelike")):
         raise Exception("Vector field type not generated, used either: 'nulllike', 'timelike")
@@ -21,5 +21,9 @@ def generate_uniform_field(type, num_angular_vec, num_time_vec):
         vec_field = np.ones((4, num_angular_vec))
         vec_field[1:, :] = get_even_points_on_sphere(1, num_angular_vec)
         vec_field = vec_field / (((vec_field[0, :] ** 2) + (vec_field[1, :] ** 2) + (vec_field[2, :] ** 2) + (vec_field[3, :] ** 2)) ** 0.5)
-        
+
+    if gpu is not None:
+        from pywarp.gpu import asarray as gpu_asarray
+        vec_field = gpu_asarray(vec_field, library=gpu)
+    
     return vec_field

@@ -1,4 +1,4 @@
-import numpy as np
+from array_api_compat import array_namespace
 
 from pywarp.solver.utils.c_det import c_det
 
@@ -11,7 +11,13 @@ def c4_inv(cell_array):
 
     det = c_det(r)
 
-    inv_cell_array = np.array([
+    xp = array_namespace(cell_array[0][0])
+
+    inv_cell_array = xp.stack( 
+        tuple(
+            xp.stack(tuple(row), axis=0)
+            for row in
+    [
     [
         (1 / det) * (r[1][1] * r[2][2] * r[3][3] - r[1][1] * r[2][3] * r[3][2] - r[1][2] * r[2][1] * r[3][3] + r[1][2] * r[2][3] * r[3][1] + r[1][3] * r[2][1] * r[3][2] - r[1][3] * r[2][2] * r[3][1]),
         (1 / det) * (r[0][1] * r[2][3] * r[3][2] - r[0][1] * r[2][2] * r[3][3] + r[0][2] * r[2][1] * r[3][3] - r[0][2] * r[2][3] * r[3][1] - r[0][3] * r[2][1] * r[3][2] + r[0][3] * r[2][2] * r[3][1]),
@@ -36,6 +42,8 @@ def c4_inv(cell_array):
         (1 / det) * (r[0][0] * r[1][2] * r[3][1] - r[0][0] * r[1][1] * r[3][2] + r[0][1] * r[1][0] * r[3][2] - r[0][1] * r[1][2] * r[3][0] - r[0][2] * r[1][0] * r[3][1] + r[0][2] * r[1][1] * r[3][0]),
         (1 / det) * (r[0][0] * r[1][1] * r[2][2] - r[0][0] * r[1][2] * r[2][1] - r[0][1] * r[1][0] * r[2][2] + r[0][1] * r[1][2] * r[2][0] + r[0][2] * r[1][0] * r[2][1] - r[0][2] * r[1][1] * r[2][0]),
     ],
-    ])
+    ]),
+    axis=0
+    )
 
     return inv_cell_array

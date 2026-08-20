@@ -1,8 +1,9 @@
 from pywarp.solver.get_energy_tensor import get_energy_tensor
 from pywarp.analyser.do_frame_transfer import do_frame_transfer
 from pywarp.analyser.get_energy_conditions import get_energy_conditions
+from pywarp.analyser.get_scalars import get_scalars
 
-def eval_metric(metric, keep_positive, num_angular_vec, num_time_vec):
+def eval_metric(metric, keep_positive, num_angular_vec, num_time_vec, gpu=None):
 
     # Handle default input arguments
     if keep_positive is None:
@@ -25,10 +26,10 @@ def eval_metric(metric, keep_positive, num_angular_vec, num_time_vec):
 
     #Energy condition outputs
 
-    output['null'] = get_energy_conditions(output['energy_tensor'], metric, "Null", num_angular_vec, num_time_vec, 0)
-    output['weak'] = get_energy_conditions(output['energy_tensor'], metric, "Weak", num_angular_vec, num_time_vec, 0)
-    output['strong'] = get_energy_conditions(output['energy_tensor'], metric, "Strong", num_angular_vec, num_time_vec, 0)
-    output['dominant'] = get_energy_conditions(output['energy_tensor'], metric, "Dominant", num_angular_vec, num_time_vec, 0)
+    output['null'] = get_energy_conditions(output['energy_tensor'], metric, "Null", num_angular_vec, num_time_vec, 0, gpu)
+    output['weak'] = get_energy_conditions(output['energy_tensor'], metric, "Weak", num_angular_vec, num_time_vec, 0, gpu)
+    output['strong'] = get_energy_conditions(output['energy_tensor'], metric, "Strong", num_angular_vec, num_time_vec, 0, gpu)
+    output['dominant'] = get_energy_conditions(output['energy_tensor'], metric, "Dominant", num_angular_vec, num_time_vec, 0, gpu)
 
     if not keep_positive:
         output['null'][output['null'] > 0] = 0

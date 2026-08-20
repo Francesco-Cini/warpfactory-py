@@ -8,7 +8,7 @@ from pywarp.solver.utils.is_field import is_field
 from pywarp.solver.utils.tensor_cell_2_array import tensor_cell_2_array
 from pywarp.analyser.utils.get_eulerian_transformation_matrix import get_eulerian_transformation_matrix
 
-def do_frame_transfer(metric, energy_tensor, frame):
+def do_frame_transfer(metric, energy_tensor, frame, gpu=None):
 
     transformed_energy_tensor = copy.deepcopy(energy_tensor)
     transformed_energy_tensor['tensor'] = [[None for _ in range(4)] for _ in range(4)]
@@ -22,8 +22,8 @@ def do_frame_transfer(metric, energy_tensor, frame):
     if strcmpi(frame, "Eulerian") and not (is_field(energy_tensor, 'frame') and strcmpi(energy_tensor['frame'], "Eulerian")):
         energy_tensor = change_tensor_index(energy_tensor, "covariant", metric)
 
-        array_energy_tensor = tensor_cell_2_array(energy_tensor)
-        array_metric_tensor = tensor_cell_2_array(metric)
+        array_energy_tensor = tensor_cell_2_array(energy_tensor, gpu)
+        array_metric_tensor = tensor_cell_2_array(metric, gpu)  
 
         M = get_eulerian_transformation_matrix(array_metric_tensor, metric['coords'])
 

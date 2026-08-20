@@ -1,7 +1,6 @@
-import numpy as np
-
 def c_det(cell_array):
-    if isinstance(cell_array, np.ndarray):
+
+    if hasattr(cell_array, "shape"):
         cell_array = [
             [cell_array[i, j] for j in range(cell_array.shape[1])]
             for i in range(cell_array.shape[0])

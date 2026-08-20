@@ -8,8 +8,12 @@ from pywarp.analyser.change_tensor_index import change_tensor_index
 from pywarp.metrics.minkowski.metric_get_minkowski import metric_get_minkowski
 from pywarp.analyser.utils.get_inner_product import get_inner_product
 from pywarp.analyser.utils.get_trace import get_trace
+from pywarp.gpu import (
+    asarray as gpu_asarray,
+    asnumpy as gpu_asnumpy
+)
 
-def get_energy_conditions(energy_tensor, metric, condition, num_angular_vec, num_time_vec, return_vec):
+def get_energy_conditions(energy_tensor, metric, condition, num_angular_vec, num_time_vec, return_vec, gpu=None):
 
     # Handle default input arguments
     if num_angular_vec is None:
@@ -37,11 +41,22 @@ def get_energy_conditions(energy_tensor, metric, condition, num_angular_vec, num
     if not verify_tensor(energy_tensor, 1):
         raise Exception("Stress-energy is not verified. Please verify stress-eenergy using verify_tensor(EnergyTensor)")
 
+    if gpu is not None:
+        energy_tensor_gpu = energy_tensor
+        metric_gpu = metric
+        for i in range(4):
+            for j in range(4):
+                energy_tensor_gpu['tensor'][i][j] = gpu_asarray(energy_tensor['tensor'][i][j], library=gpu)
+                metric_gpu['tensor'][i][j] = gpu_asarray(metric['tensor'][i][j], library=gpu)
+
+        energy_tensor = energy_tensor_gpu
+        metric = metric_gpu
+
     # Get size of spacetime 
     a, b, c, d = metric['tensor'][0][0].shape
 
     # Convert energy tensor into the local inertial frame if not eulerian
-    energy_tensor = do_frame_transfer(metric, energy_tensor, "Eulerian")
+    energy_tensor = do_frame_transfer(metric, energy_tensor, "Eulerian", gpu)
 
     # -------------------
     # Build Vector Fields
@@ -52,7 +67,7 @@ def get_energy_conditions(energy_tensor, metric, condition, num_angular_vec, num
     elif strcmpi(condition, "Weak") or strcmpi(condition, "Strong"):
         type = "timelike"
 
-    vec_field = generate_uniform_field(type, num_angular_vec, num_time_vec)
+    vec_field = generate_uniform_field(type, num_angular_vec, num_time_vec, gpu)
 
     # Declare variables to be determined in theeval of energy conditions
     map_array = np.full((a, b, c, d), np.nan)

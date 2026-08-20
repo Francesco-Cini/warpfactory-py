@@ -1,4 +1,4 @@
-import numpy as np
+from array_api_compat import array_namespace
 
 from pywarp.units.universal_constants.c import c
 
@@ -7,7 +7,7 @@ from pywarp.solver.utils.take_finite_difference_2 import take_finite_difference_
 
 def ricci_t(gu, gl, delta):
 
-    s = gl[0][0].shape
+    xp = array_namespace(gl[0][0])
 
     R_munu = [[None for _ in range(4)] for _ in range(4)]
 
@@ -51,19 +51,19 @@ def ricci_t(gu, gl, delta):
     for i in range(4):
         for j in range(4):
 
-            R_munu_temp = np.zeros(s)
+            R_munu_temp = xp.zeros_like(gl[0][0])
 
             for a in range(4):
                 for b in range(4):
-                    R_munu_temp_2 = np.zeros(s)
+                    R_munu_temp_2 = xp.zeros_like(gl[0][0])
 
                     R_munu_temp_2 = R_munu_temp_2 - (diff_2_gl[i][j][a][b] + diff_2_gl[a][b][i][j] - diff_2_gl[i][b][j][a] - diff_2_gl[j][b][i][a])
 
                     for r in range(4):
 
-                        R_munu_temp_3 = np.zeros(s)
-                        R_munu_temp_4 = np.zeros(s)
-                        R_munu_temp_5 = np.zeros(s)
+                        R_munu_temp_3 = xp.zeros_like(gl[0][0])
+                        R_munu_temp_4 = xp.zeros_like(gl[0][0])
+                        R_munu_temp_5 = xp.zeros_like(gl[0][0])
 
                         for d in range(4):
 

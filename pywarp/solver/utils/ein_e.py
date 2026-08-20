@@ -1,4 +1,4 @@
-import numpy as np
+from math import pi 
 
 from pywarp.units.universal_constants.c import c
 from pywarp.units.universal_constants.G import G
@@ -10,7 +10,7 @@ def ein_e(E, gu):
     for mu in range(4):
         for nu in range(4):
 
-            en_den_[mu][nu] = (c() ** 4) / (8 * np.pi * G()) * E[mu][nu]
+            en_den_[mu][nu] = (c() ** 4) / (8 * pi * G()) * E[mu][nu]
     
     en_den = [[None for _ in range(4)] for _ in range(4)]
 
